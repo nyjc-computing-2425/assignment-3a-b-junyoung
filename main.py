@@ -1,51 +1,39 @@
 nric = input('Enter an NRIC number: ')
 
 # Type your code below
-def validate(nric):
-  nric_no = nric[1:-1]
-  length = len(nric_no)
-  int(nric_no)
-  for char in nric[1:-1]:
-      try:
-          nric_no = [int(char) for char in nric[1:-1]]
-      except ValueError:
-        return 1
+nric_no = nric[1:-1]
+length = len(nric_no)
+nric_end = nric[-1]
+start_st = "JZIHGFEDCBA"
+start_fg = "XWUTRQPNMLK"
 
-  nric_end = nric[-1]
-  if nric.startswith(("S", "T", "F", "G")) and nric_end.isalpha():
-      digit_weight = [2, 7, 6, 5, 4, 3, 2]
-      final = 0
-      for i in range(length):
-          inter = 0
-          inter = nric_no[i] * digit_weight[i]
-          final = int(final) + int(inter)
-      if nric.startswith(("T", "G")):
-          final = final + 4
-          final = final % 11
-      else:
-          final = final % 11
-        
-      if nric.startswith(("S", "T")):
-          dict_1 = {0: "J", 1: "Z", 2: "I", 3: "H", 4: "G", 5: "F", 6: "E", 7: "D", 8: "C", 9: "B", 10: "A"}
-          last_alpha = dict_1[final]
-          if nric[-1] == last_alpha:
-              return 0
-          else:
-              return 1
-            
-      elif nric.startswith(("F", "G")):
-          dict_2 = {0: "X", 1: "W", 2: "U", 3: "T", 4: "R", 5: "Q", 6: "P", 7: "N", 8: "M", 9: "L", 10: "K"}
-          last_alpha = dict_2[final]
-          if nric[-1] == last_alpha:
-              return 0
-          else:
-              return 1
-            
+if nric.startswith(("S", "T", "F", "G")) and nric_end.isalpha() and length == 7:
+  total_sum = 0
+  total_sum += int(nric_no[0]) * 2
+  total_sum += int(nric_no[1]) * 7
+  total_sum += int(nric_no[2]) * 6
+  total_sum += int(nric_no[3]) * 5
+  total_sum += int(nric_no[4]) * 4
+  total_sum += int(nric_no[5]) * 3
+  total_sum += int(nric_no[6]) * 2
+  
+  if nric.startswith(("T", "G")):
+    total_sum += 4
+    final_val = total_sum % 11
   else:
-      return 1
+    final_val = total_sum % 11
 
-answer = validate(nric)
-if answer == 0:
-  print("NRIC is valid.")
-elif answer == 1:
+  if nric.startswith(("S", "T")):
+    if start_st[final_val] == nric_end:
+      print("NRIC is valid.")
+    else:
+      print("NRIC is invalid.")
+
+  if nric.startswith(("F", "G")):
+    if start_fg[final_val] == nric_end:
+      print("NRIC is valid.")
+    else:
+      print("NRIC is invalid.")
+
+else:
   print("NRIC is invalid.")
